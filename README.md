@@ -45,8 +45,6 @@ Este proyecto consiste en desarrollar un bot interactivo integrado en una web `.
     DB_NAME=tu-db-name
     ```
 
-## Estructura del Proyecto
-```plaintext
 proyecto-bot-interactivo/
 ├── public/
 ├── src/
@@ -76,3 +74,4 @@ proyecto-bot-interactivo/
 ├── docker-compose.yml
 ├── package.json
 ├── README.md
+
