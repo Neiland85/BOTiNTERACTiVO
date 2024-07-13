@@ -1,0 +1,23 @@
+
+### Estructura del Código
+
+#### Frontend (React)
+```javascript
+// src/App.js
+import React from 'react';
+import BotHead from './components/BotHead';
+import UserInputForm from './components/UserInputForm';
+import Recommendations from './components/Recommendations';
+
+function App() {
+  return (
+    <div className="App">
+      <BotHead />
+      <UserInputForm />
+      <Recommendations />
+    </div>
+  );
+}
+
+export default App;
+
