@@ -1,11 +1,43 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+name: Node.js CI
 
-version: 2
-updates:
-  - package-ecosystem: " # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "Weekly"
+on:
+  push:
+    branches:
+      - main.js
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm audit fix
+      - run: npm run build --if-present
+      - run: npm test
+
+      - name: Clean up
+        run: |
+          echo "Cleaning up unnecessary and potentially malicious files..."
+          find . -type f -name "*.log" -delete
+          find . -type f -name "*.tmp" -delete
+          find . -type f -name "*.temp" -delete
+          find . -type f -name "*.pid" -delete
+          find . -type f -name "*.seed" -delete
+          find . -type f -name "*.pid.lock" -delete
+          find . -type f -name "*.swp" -delete
+          find . -type f -name "*.swo" -delete
+          find . -type f -name "._*" -delete
+          find . -type f -name ".DS_Store" -delete
+          find . -type f -name "Thumbs.db" -delete
+          echo "Cleanup completed."
