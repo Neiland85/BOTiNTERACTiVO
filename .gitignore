@@ -113,3 +113,6 @@ __sapper__/
 tmp/
 temp/
 
+node_modules/
+venv/
+.env
