@@ -1,0 +1,21 @@
+name: Update .gitignore
+
+on:
+  push:
+    paths:
+      - '.gitignore'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update .gitignore
+      run: |
+        echo "# Custom ignore rules" >> .gitignore
+        git config --global Neiland85 "GitHub Actions"
+        git config --global theia3impact@gmail.com "actions@github.com"
+        git add .gitignore
+        git commit -m "Update .gitignore to include all relevant directories and files"
+        git push
