@@ -1,0 +1,35 @@
+name: Cleanup
+
+on:
+  schedule:
+    # Ejecutar todos los días a la medianoche UTC
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    - name: Find and delete generated files
+      run: |
+        # Aquí defines los patrones de archivos que quieres eliminar
+        find . -name '*.log' -type f -delete
+        find . -name '*.tmp' -type f -delete
+        find . -name '*.cookie' -type f -delete
+        
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add -A
+        git commit -m "Cleanup generated files"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
