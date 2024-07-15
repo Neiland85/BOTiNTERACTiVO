@@ -3,14 +3,14 @@ name: Jekyll Deploy
 on:
   push:
     branches:
-      - main.js
+      - main
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
 
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
@@ -24,6 +24,12 @@ jobs:
 
       - name: Build site
         run: bundle exec jekyll build
+
+      - name: Cleanup unnecessary files
+        run: |
+          find . -name '*.pyc' -delete
+          find . -name '__pycache__' -delete
+          rm -rf path/to/unnecessary/file_or_folder
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
