@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Temporarily disable AWS credentials configuration until you have them
       # - name: Configure AWS credentials
