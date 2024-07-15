@@ -1,0 +1,23 @@
+{
+  "name": "bot-interactivo",
+  "version": "1.0.0",
+  "description": "Bot interactivo con integración AWS",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "deploy": "gh-pages -d build"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "mongoose": "^5.12.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
