@@ -1,52 +1,38 @@
-name: Deploy to Amazon ECS
+name: Jekyll Deploy
 
 on:
   push:
     branches:
-      - main.js
+      - main
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v2
 
-      # Temporarily disable AWS credentials configuration until you have them
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-east-1
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
 
-      - name: Login to Amazon ECR
-        id: login-ear
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build, tag, and push the image to Amazon ECR
-        env:
-          ECR_REPOSITORY: my-ear-repo
-          IMAGE_TAG: latest
+      - name: Install dependencies
         run: |
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG.
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecs.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecs.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          gem install bundler
+          bundle install
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ecs-task-def.json
-          container-name: my-container
-          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-ecr-repo:latest
+      - name: Build site
+        run: bundle exec jekyll build
 
-      - name: Deploy Amazon ECS task definition
-        id: deploy-ecs
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      - name: Cleanup unnecessary files
+        run: |
+          find. -name '*.pyc' -delete
+          find. -name '__pycache__' -delete
+          rm -rf path/to/unnecessary/file_or_folder
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: my-ecs-service
-          cluster: my-ecs-cluster
-          wait-for-service-stability: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
