@@ -1,36 +1,20 @@
+{
   "name": "frontend/BOTiNTERACTiVO",
   "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-  "nth-check": "^2.0.1"
-  },
-    "Axios": "^0.21.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "^5.0.1"
-  },
+  "description": "Bot interactivo con integración AWS",
+  "main": "server/app.js",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server/app.js",
     "build": "react-scripts build",
-    " `react-scripts eject`."
+    "test": "react-scripts test"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "Express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "mongoose": "^5.12.3"
   },
-  "browsers list": {
-    "production": [
-      ">0.2%",
-      "not op_mini all",
-      "not dead"
-    ],
-    "development": [
-      "last 1 version",
-      ">0.2%",
-      "not op_mini all"
-    ]
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
 
