@@ -35,7 +35,7 @@ jobs:
         sed -i "s|<ECR_REPOSITORY>|my-repository|g" ecs-task-def.json
 
     - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
         task-definition: ecs-task-def.json
         service: my-service
